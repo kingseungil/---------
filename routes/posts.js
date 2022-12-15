@@ -24,7 +24,12 @@ router.post("/posts", async (req, res) => {
     res.json({ result: "success" });
 });
 
-// 게시글 조회 API
+// 게시글 조회 API (author이용)
+router.get("/posts/:author", async (req, res) => {
+    const { author } = req.params;
+    const result = await Posts.find({ author });
+    res.json(result);
+});
 
 // 게시글 수정 API
 
