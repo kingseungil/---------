@@ -12,6 +12,17 @@ router.get("/posts", async (req, res) => {
 });
 
 // 게시글 작성 API
+router.post("/posts", async (req, res) => {
+    const { password, title, content, author } = req.body;
+    const post = new Posts({
+        title: title,
+        password: password,
+        content: content,
+        author: author,
+    });
+    await post.save();
+    res.json({ result: "success" });
+});
 
 // 게시글 조회 API
 
