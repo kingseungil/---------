@@ -3,7 +3,7 @@ const router = express.Router();
 const Posts = require("../schemas/post");
 
 /**
- * 전체 게시글 목록 조회 API\
+ * 전체 게시글 목록 조회 API
  * 작성 날짜 기준으로 내림차순 정렬
  */
 router.get("/posts", async (req, res) => {
@@ -13,8 +13,15 @@ router.get("/posts", async (req, res) => {
 
 // 게시글 작성 API
 router.post("/posts", async (req, res) => {
-    const { password, title, content, author } = req.body;
+    const { postId, password, title, content, author } = req.body;
+    const posts = await Posts.find({ postId });
+    if (posts.length) {
+        return res
+            .status(400)
+            .json({ success: false, errorMessage: "이미 있는 데이터입니다" });
+    }
     const post = new Posts({
+        postId: postId,
         title: title,
         password: password,
         content: content,
