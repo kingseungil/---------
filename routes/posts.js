@@ -31,9 +31,10 @@ router.post("/posts", async (req, res) => {
 //     res.json(result);
 // });
 
-// 게시글 조회 API (postId이용)
-router.get("/posts/:postId", async (req, res) => {
-    const { postId } = req.params;
+// 게시글 조회 API (id값 이용)
+router.get("/posts/:id", async (req, res) => {
+    const { id } = req.params;
+    const result = await Posts.find({ id: id });
     res.json(result);
 });
 
