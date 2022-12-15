@@ -1,12 +1,8 @@
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
+const AutoIncrement = require("mongoose-sequence")(mongoose);
 
 const postsSchema = new mongoose.Schema({
-    postId: {
-        type: Number,
-        required: true,
-        unique: true,
-    },
     password: {
         type: String,
         required: true,
@@ -28,5 +24,5 @@ const postsSchema = new mongoose.Schema({
         default: Date.now,
     },
 });
-
+postsSchema.plugin(AutoIncrement, { inc_field: "id" });
 module.exports = mongoose.model("Posts", postsSchema);

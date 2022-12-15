@@ -13,28 +13,27 @@ router.get("/posts", async (req, res) => {
 
 // 게시글 작성 API
 router.post("/posts", async (req, res) => {
-    const { postId, password, title, content, author } = req.body;
-    const posts = await Posts.find({ postId });
-    if (posts.length) {
-        return res
-            .status(400)
-            .json({ success: false, errorMessage: "이미 있는 데이터입니다" });
-    }
+    const { password, title, content, author } = req.body;
     const post = new Posts({
-        postId: postId,
         title: title,
         password: password,
         content: content,
         author: author,
     });
     await post.save();
-    res.json({ result: "success" });
+    res.status(200).json(post);
 });
 
 // 게시글 조회 API (author이용)
-router.get("/posts/:author", async (req, res) => {
-    const { author } = req.params;
-    const result = await Posts.find({ author });
+// router.get("/posts/:author", async (req, res) => {
+//     const { author } = req.params;
+//     const result = await Posts.find({ author });
+//     res.json(result);
+// });
+
+// 게시글 조회 API (postId이용)
+router.get("/posts/:postId", async (req, res) => {
+    const { postId } = req.params;
     res.json(result);
 });
 
