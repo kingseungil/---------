@@ -31,7 +31,11 @@ router.get("/posts/:author", async (req, res) => {
     res.json(result);
 });
 
-// 게시글 수정 API
+/**
+ * 게시글 수정 API
+ * 입력된 비밀번호를 비교하여 동일할 때만 글이 삭제
+ * */
+router.put("/posts/:", async (req, res) => {});
 
 // 게시글 삭제 API
 
