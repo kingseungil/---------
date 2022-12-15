@@ -7,6 +7,10 @@ const postsSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    password: {
+        type: String,
+        required: true,
+    },
     title: {
         type: String,
         required: true,
@@ -16,7 +20,7 @@ const postsSchema = new mongoose.Schema({
         required: true,
     },
     author: {
-        type: string,
+        type: String,
         required: true,
     },
     regDate: {
@@ -25,4 +29,4 @@ const postsSchema = new mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model("Goods", goodsSchema);
+module.exports = mongoose.model("Posts", postsSchema);
