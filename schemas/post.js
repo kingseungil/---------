@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 
 const postsSchema = new mongoose.Schema({
+    postId: {
+        type: Number,
+        required: true,
+        unique: true,
+    },
     password: {
         type: String,
         required: true,
