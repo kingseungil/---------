@@ -28,5 +28,5 @@ const postsSchema = new mongoose.Schema({
 postsSchema.pre("save", async function () {
     this.password = await bcrypt.hash(this.password, 5);
 });
-postsSchema.plugin(AutoIncrement, { inc_field: "id" });
-module.exports = mongoose.model("Posts", postsSchema);
+postsSchema.plugin(AutoIncrement, { inc_field: "postid" });
+module.exports = mongoose.model("Posts", postsSchema, "posts");

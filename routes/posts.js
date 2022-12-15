@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Posts = require("../schemas/post");
-const bcrypt = require("bcrypt");
+// const bcrypt = require("bcrypt");
 
 /**
  * 전체 게시글 목록 조회 API
@@ -35,10 +35,10 @@ router.post("/posts", async (req, res) => {
 // });
 
 // 게시글 조회 API (id값 이용)
-router.get("/posts/:id", async (req, res) => {
-    const { id } = req.params;
+router.get("/posts/:postid", async (req, res) => {
+    const { postid } = req.params;
 
-    const result = await Posts.find({ id: id });
+    const result = await Posts.find({ postid });
 
     res.json(result);
 });
@@ -47,8 +47,8 @@ router.get("/posts/:id", async (req, res) => {
  * 게시글 수정 API
  * 입력된 비밀번호를 비교하여 동일할 때만 글이 삭제
  * */
-router.put("/posts/:id", async (req, res) => {
-    const { id } = req.params;
+router.put("/posts/:postid", async (req, res) => {
+    const { postid } = req.params;
     const { password, title, content, author } = req.body;
     // const post = await Posts.find({ id: id });
     // const passwordMatch = await bcrypt.compare(password, post.password);
@@ -62,13 +62,16 @@ router.put("/posts/:id", async (req, res) => {
     //         author: author,
     //     },
     // });
-    await Posts.findOneAndUpdate(id, {
-        $set: {
-            title: title,
-            content: content,
-            author: author,
-        },
-    });
+    await Posts.findOneAndUpdate(
+        { postid },
+        {
+            $set: {
+                title: title,
+                content: content,
+                author: author,
+            },
+        }
+    );
     res.json({ success: true });
 });
 
@@ -76,11 +79,11 @@ router.put("/posts/:id", async (req, res) => {
  * 게시글 삭제 API
  * - 입력된 비밀번호를 확인하여 삭제
  */
-router.delete("/posts/:id", async (req, res) => {
-    const { id } = req.params;
-    const post = await Posts.find({ id });
+router.delete("/posts/:postid", async (req, res) => {
+    const { postid } = req.params;
+    const post = await Posts.find({ postid });
     if (post) {
-        await Posts.deleteOne({ id });
+        await Posts.deleteOne({ postid });
     }
     res.json({ success: true });
 });
