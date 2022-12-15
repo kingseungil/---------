@@ -1,5 +1,4 @@
 const express = require("express");
-const { findOneAndDelete } = require("../schemas/comment.js");
 const router = express.Router();
 const Comments = require("../schemas/comment.js");
 
