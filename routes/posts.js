@@ -42,8 +42,30 @@ router.get("/posts/:id", async (req, res) => {
  * 게시글 수정 API
  * 입력된 비밀번호를 비교하여 동일할 때만 글이 삭제
  * */
-router.put("/posts/:", async (req, res) => {});
+router.put("/posts/:id", async (req, res) => {
+    const { id } = req.params;
+    const { password, title, content, author } = req.body;
+    const post = Posts.find({ id: id });
 
-// 게시글 삭제 API
+    if (post.password !== password) {
+        return res.json({ message: "비밀번호 불일치" });
+    } else {
+        await Posts.findOneAndUpdate(
+            { id: id },
+            {
+                $set: {
+                    title: title,
+                    content: content,
+                    author: author,
+                },
+            }
+        );
+        res.status(200).json({ success: true });
+    }
+});
 
+/**
+ * 게시글 삭제 API
+ * - 입력된 비밀번호를 확인하여 삭제
+ */
 module.exports = router;

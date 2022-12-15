@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 const AutoIncrement = require("mongoose-sequence")(mongoose);
+const bcrypt = require("bcrypt");
 
 const postsSchema = new mongoose.Schema({
     password: {
@@ -23,6 +24,9 @@ const postsSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+});
+postsSchema.pre("save", async function () {
+    this.password = await bcrypt.hash(this.password, 5);
 });
 postsSchema.plugin(AutoIncrement, { inc_field: "id" });
 module.exports = mongoose.model("Posts", postsSchema);
