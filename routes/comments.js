@@ -14,7 +14,7 @@ router.get("/comments/:postId", async (req, res) => {
         .where("postId")
         .equals(postId)
         .sort({ regDate: -1 });
-    res.json(result);
+    res.status(200).json(result);
 });
 
 /**
@@ -25,7 +25,7 @@ router.get("/comments/:postId", async (req, res) => {
 router.post("/comments", async (req, res) => {
     const { author, content, postId } = req.body;
     if (!content) {
-        return res.json({
+        return res.status(400).json({
             success: false,
             message: "댓글 내용을 입력해주세요",
         });
@@ -36,8 +36,8 @@ router.post("/comments", async (req, res) => {
         postId,
     });
     await comment.save();
-    res.status(200).json({
-        success: true,
+    res.status(201).json({
+        message: "댓글을 생성하였습니다",
     });
 });
 
@@ -50,20 +50,27 @@ router.put("/comments/:commentid", async (req, res) => {
     const { commentid } = req.params;
     const { content } = req.body;
     if (!content) {
-        return res.json({
+        return res.status(400).json({
             success: false,
             message: "댓글 내용을 입력해주세요",
         });
     }
-    await Comments.findOneAndUpdate(
-        { commentid },
-        {
-            $set: {
-                content: content,
-            },
-        }
-    );
-    res.json({ success: true });
+    const comment = await Comments.find({ commentid });
+    if (!comment.length) {
+        return res.status(404).json({
+            message: "해당하는 댓글이 없습니다",
+        });
+    } else {
+        await Comments.updateOne(
+            { commentid },
+            {
+                $set: {
+                    content: content,
+                },
+            }
+        );
+        res.status(201).json({ message: "댓글을 수정하였습니다." });
+    }
 });
 
 /**
@@ -73,10 +80,14 @@ router.put("/comments/:commentid", async (req, res) => {
 router.delete("/comments/:commentid", async (req, res) => {
     const { commentid } = req.params;
     const comment = await Comments.find({ commentid });
-    if (comment) {
+    if (!comment.length) {
+        return res.status(404).json({
+            message: "해당하는 댓글이 없습니다",
+        });
+    } else {
         await Comments.deleteOne({ commentid });
+        return res.status(200).json({ message: "댓글을 삭제하였습니다." });
     }
-    res.json({ success: true });
 });
 
 module.exports = router;

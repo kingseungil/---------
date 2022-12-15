@@ -9,7 +9,7 @@ const Posts = require("../schemas/post");
  */
 router.get("/posts", async (req, res) => {
     const result = await Posts.find().sort({ regDate: -1 });
-    res.json(result);
+    res.status(200).json(result);
 });
 
 // 게시글 작성 API
@@ -24,23 +24,21 @@ router.post("/posts", async (req, res) => {
     await post.save();
     // console.log(password);
     // console.log(post.password); // 암호화된 password
-    res.status(200).json(post);
+    res.status(201).json({ message: "게시글을 생성하였습니다." });
 });
-
-// 게시글 조회 API (author이용)
-// router.get("/posts/:author", async (req, res) => {
-//     const { author } = req.params;
-//     const result = await Posts.find({ author });
-//     res.json(result);
-// });
 
 // 게시글 조회 API (id값 이용)
 router.get("/posts/:postid", async (req, res) => {
     const { postid } = req.params;
-
-    const result = await Posts.find({ postid });
-
-    res.json(result);
+    const post = await Posts.find({ postid });
+    if (post.length) {
+        const result = await Posts.find({ postid });
+        res.status(200).json(result);
+    } else {
+        res.status(404).json({
+            message: "해당하는 게시글이 없습니다",
+        });
+    }
 });
 
 /**
@@ -62,17 +60,22 @@ router.put("/posts/:postid", async (req, res) => {
     //         author: author,
     //     },
     // });
-    await Posts.findOneAndUpdate(
-        { postid },
-        {
-            $set: {
-                title: title,
-                content: content,
-                author: author,
-            },
-        }
-    );
-    res.json({ success: true });
+    const post = await Posts.find({ postid });
+    if (post.length) {
+        await Posts.updateOne(
+            { postid },
+            {
+                $set: {
+                    title: title,
+                    content: content,
+                    author: author,
+                },
+            }
+        );
+        res.status(201).json({ message: "게시글을 수정하였습니다." });
+    } else {
+        res.status(404).json({ message: "해당하는 게시글이 없습니다." });
+    }
 });
 
 /**
@@ -82,10 +85,12 @@ router.put("/posts/:postid", async (req, res) => {
 router.delete("/posts/:postid", async (req, res) => {
     const { postid } = req.params;
     const post = await Posts.find({ postid });
-    if (post) {
+    if (post.length) {
         await Posts.deleteOne({ postid });
+        res.status(200).json({ message: "게시글을 삭제하였습니다." });
+    } else {
+        res.status(404).json({ message: "해당하는 게시글이 없습니다." });
     }
-    res.json({ success: true });
 });
 
 module.exports = router;
