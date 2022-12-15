@@ -1,0 +1,15 @@
+{
+  "name": "sparta",
+  "version": "1.0.0",
+  "description": "입문주차 개인과제",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "김승일",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^6.8.0"
+  }
+}
