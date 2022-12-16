@@ -9,7 +9,7 @@ const Posts = require("../schemas/post");
  */
 router.get("/posts", async (req, res) => {
     const result = await Posts.find().sort({ regDate: -1 });
-    res.status(200).json(result);
+    res.status(200).json(result); //!  result -> posts 로 변경(네이밍)
 });
 
 // 게시글 작성 API

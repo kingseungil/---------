@@ -10,5 +10,5 @@ connect();
 app.use(express.json());
 app.use("/api", [postsRouter, commentsRouter]);
 
-app.get("/", (req, res) => res.send("Hello World!"));
+app.get("/", (req, res) => res.send("Hello World!")); //~ 엔트리포인트
 app.listen(port, () => console.log(port, "포트로 서버가 열렸습니다"));

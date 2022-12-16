@@ -6,13 +6,15 @@ const Comments = require("../schemas/comment.js");
  * 댓글 목록 조회 API
  * 조회하는 게시글에 작성된 모든 댓글을 목록 형식으로 볼 수 있게 하기
  * 작성 날짜 기준으로 내림차순 정렬
+ * ! 목록 => 페이지네이션 있으면 좋음
  */
 router.get("/comments/:postId", async (req, res) => {
     const { postId } = req.params;
     const result = await Comments.find()
         .where("postId")
         .equals(postId)
-        .sort({ regDate: -1 });
+        // .sort({ regDate: -1 });
+        .sort("-regDate");
     res.status(200).json(result);
 });
 

@@ -8,6 +8,7 @@ const commentsSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    //! 작성자 이름은 id값으로 해주는 게 좋음! (닉네임을 바꿀수도 있기때문)
     author: {
         type: String,
         required: true,
