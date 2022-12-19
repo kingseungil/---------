@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 
 //~ 회원가입
 const { Op } = require("sequelize");
+const authMiddleware = require("../middlewares/auth-middleware");
 const { User } = require("../models");
 
 router.post("/signup", async (req, res) => {
@@ -55,7 +56,9 @@ router.post("/login", async (req, res) => {
     });
 });
 
-//~ 로그인 검사
-const authMiddleware = require("../middlewares/auth-middleware");
+//~ 내 정보 가져오기
+router.get("/users/me", authMiddleware, async (req, res) => {
+    res.json({ user: res.locals.user });
+});
 
 module.exports = router;

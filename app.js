@@ -1,9 +1,10 @@
 const express = require("express");
 const { sequelize } = require("./models");
+
 const app = express();
 const port = 3000;
 
-// const postsRouter = require("./routes/posts.js");
+const postsRouter = require("./routes/posts.js");
 // const commentsRouter = require("./routes/comments.js");
 const usersRouter = require("./routes/users.js");
 
@@ -17,7 +18,7 @@ sequelize
     });
 app.use(express.json());
 // app.use("/api", [postsRouter, commentsRouter, usersRouter]);
-app.use("/api", [usersRouter]);
+app.use("/api", [usersRouter, postsRouter]);
 
 app.get("/", (req, res) => res.send("Hello World!")); //~ 엔트리포인트
 
