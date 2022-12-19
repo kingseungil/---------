@@ -35,4 +35,24 @@ router.post("/signup", async (req, res) => {
     });
 });
 
+//~ 로그인
+router.post("/login", async (req, res) => {
+    const { nickname, password } = req.body;
+
+    const user = await User.findOne({
+        where: {
+            nickname,
+        },
+    });
+    if (!user || password !== user.password) {
+        res.status(412).send({
+            errorMessage: "닉네임 또는 패스워드를 확인해주세요",
+        });
+        return;
+    }
+    res.send({
+        token: jwt.sign({ userId: user.userId }, "sparta"),
+    });
+});
+
 module.exports = router;
