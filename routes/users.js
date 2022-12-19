@@ -55,4 +55,7 @@ router.post("/login", async (req, res) => {
     });
 });
 
+//~ 로그인 검사
+const authMiddleware = require("../middlewares/auth-middleware");
+
 module.exports = router;
