@@ -14,13 +14,13 @@ module.exports = (sequelize, DataTypes) => {
                 onDelete: "cascade",
                 onUpdate: "cascade",
             });
-            db.User.belongsToMany(db.Post, { through: "post_like" });
             db.User.hasMany(db.Post, {
                 foreignKey: "user_id",
                 sourceKey: "id",
                 onDelete: "cascade",
                 onUpdate: "cascade",
             });
+            db.User.belongsToMany(db.Post, { through: "post_like" });
         }
     }
     User.init(

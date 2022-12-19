@@ -8,9 +8,7 @@ module.exports = (sequelize, DataTypes) => {
          * This method is not a part of Sequelize lifecycle.
          * The `models/index` file will call this method automatically.
          */
-        static associate(models) {
-            db.Post.belongsToMany(db.User, { through: "post_like" });
-
+        static associate(db) {
             db.Post.hasMany(db.Comment, {
                 foreignKey: "post_id",
                 sourceKey: "id",
@@ -23,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
                 onDelete: "cascade",
                 onUpdate: "cascade",
             });
+            db.Post.belongsToMany(db.User, { through: "post_like" });
         }
     }
     Post.init(
