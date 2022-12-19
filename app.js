@@ -5,8 +5,8 @@ const port = 3000;
 
 // const postsRouter = require("./routes/posts.js");
 // const commentsRouter = require("./routes/comments.js");
-// const connect = require("./schemas");
-// connect();
+const usersRouter = require("./routes/users.js");
+
 sequelize
     .sync({ force: false })
     .then(() => {
@@ -16,7 +16,8 @@ sequelize
         console.error(err);
     });
 app.use(express.json());
-// app.use("/api", [postsRouter, commentsRouter]);
+// app.use("/api", [postsRouter, commentsRouter, usersRouter]);
+app.use("/api", [usersRouter]);
 
 app.get("/", (req, res) => res.send("Hello World!")); //~ 엔트리포인트
 
